@@ -85,7 +85,7 @@ def run_epoch(sess, model, data, dataset_reader, eval_op, verbose=False):
   :param verbose: If True, then output training logs else don't
   """
 
-  epoch_size = ((len(data) // model.batch_size) - 1) // model.num_steps
+  epoch_size = (len(data) / model.batch_size) / model.num_steps
   start_time = time.time()
   total_cost = 0.0
   num_iters = 0
@@ -98,7 +98,7 @@ def run_epoch(sess, model, data, dataset_reader, eval_op, verbose=False):
     total_cost += cost
     num_iters += model.num_steps
 
-    if verbose and step % (epoch_size // 10) == 0:
+    if verbose and step % (epoch_size / 10) == 0:
       print("(%.2f %%) perplexity: %.3f speed: %.0f word/sec" %
             (step * 1.0 / epoch_size, np.exp(total_cost / num_iters),
              num_iters * model.batch_size / (time.time() - start_time)))
