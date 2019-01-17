@@ -199,7 +199,7 @@ def train(args):
         print("Valid Perplexity: %.3f\n" % dev_pp)
         fout.write("Valid Perplexity: %.3f\n" % dev_pp)
 
-        if dev_pp > best_pp:
+        if dev_pp < best_pp:
           print("Achieve highest perplexity on dev set, save model.")
           checkpoint_path = os.path.join(save_dir, 'model.ckpt')
           saver.save(sess, checkpoint_path, global_step=e)
