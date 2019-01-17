@@ -114,7 +114,7 @@ def train(args):
   if not os.path.exists(save_dir):
     os.mkdir(save_dir)
 
-  with open(os.path.join(save_dir, 'config.pkl'), 'wb') as f:
+  with open(os.path.join(save_dir, 'config.pkl'), 'wb', encoding='UTF-8') as f:
     cPickle.dump(args, f)
 
   data_reader = DatasetReader(args)
@@ -229,7 +229,7 @@ def test(test_args):
   start = time.time()
 
   # load hyperparameters and other flags
-  with open(os.path.join(test_args.save_dir, 'config.pkl')) as f:
+  with open(os.path.join(test_args.save_dir, 'config.pkl'), 'rb', encoding='UTF-8') as f:
     args = cPickle.load(f)
 
   data_reader = DatasetReader(args, train=False)
