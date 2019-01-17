@@ -98,7 +98,7 @@ def run_epoch(sess, model, data, dataset_reader, eval_op, verbose=False):
     total_cost += cost
     num_iters += model.num_steps
 
-    if verbose and step % (epoch_size // 10) == 10:
+    if verbose and step % (epoch_size // 10) == 0:
       print("(%.2f %%) perplexity: %.3f speed: %.0f word/sec" %
             (step * 1.0 / epoch_size, np.exp(total_cost / num_iters),
              num_iters * model.batch_size / (time.time() - start_time)))
@@ -218,8 +218,8 @@ def train(args):
 
       e += 1
 
-    print("Training time: %.0f" % (time.time() - start))
-    fout.write("Training time: %.0f\n" % (time.time() - start))
+    print("Training time: %.0f min" % ((time.time() - start)/60))
+    fout.write("Training time: %.0f min\n" % ((time.time() - start)/60))
     fout.flush()
 
 def test(test_args):
@@ -246,12 +246,6 @@ def test(test_args):
 
   with tf.Graph().as_default(), tf.Session(config=gpu_config if args.with_gpu else None) as sess:
 
-    # TODO: do we need this initializer?
-    # if args.init_scale:
-    #   initializer = tf.random_uniform_initializer(-args.init_scale, +args.init_scale)
-    # else:
-    #   initializer = tf.glorot_uniform_initializer()
-
     with tf.variable_scope('train_model', reuse=None):
       m_test = Model(args, is_training=False)
 
@@ -268,7 +262,7 @@ def test(test_args):
                         tf.no_op())
 
     print('Test Perplexity: %.3f' % test_pp)
-    print("Test time: %.0f" % (time.time() - start))
+    print("Test time: %.0f min" % ((time.time() - start)/60))
 
 if __name__ == '__main__':
     main()
