@@ -133,14 +133,14 @@ class DatasetReader:
     """
 
     data_len = len(raw_data)
-    batch_len = data_len / batch_size
+    batch_len = data_len // batch_size
 
     data = []
     for i in range(batch_size):
       x = raw_data[batch_len * i : batch_len * (i+1)]
       data.append(x)
 
-    epoch_size = batch_len / num_steps # /(B*T)
+    epoch_size = (batch_len - 1) // num_steps # /(B*T)
 
     assert epoch_size > 0, 'epoch size is 0, decrease batch_size or num_steps'
 
