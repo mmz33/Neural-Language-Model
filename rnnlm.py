@@ -10,6 +10,9 @@ from model import Model
 
 """This file is the main entry point"""
 
+gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=0.9)
+gpu_config = tf.ConfigProto(log_device_placement=False, gpu_options=gpu_options)
+
 def main():
   parser = argparse.ArgumentParser()
   # Flags for train mode (--task='train')
@@ -21,7 +24,7 @@ def main():
                       help="development/validation data path")
   parser.add_argument('--vocab_file', type=str, default=None,
                       help="vocabulary file path")
-  parser.add_argument('--save_dir', type=str, default='model',
+  parser.add_argument('--save_dir', type=str, default='models',
                       help='directory to store model checkpoints')  # Also needed for testing!
   parser.add_argument('--lr', type=float, default=0.1,
                       help='initial learning rate')
@@ -134,10 +137,7 @@ def train(args):
 
   print('Start training....')
 
-  gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=0.9)
-  gpu_config = tf.ConfigProto(log_device_placement=False, gpu_options=gpu_options)
-
-  with tf.Graph().as_default(), tf.Session(config=gpu_config) as sess:
+  with tf.Graph().as_default(), tf.Session(config=gpu_config if args.with_gpu else None) as sess:
 
     if args.init_scale:
       initializer = tf.random_uniform_initializer(-args.init_scale, +args.init_scale)
@@ -238,10 +238,7 @@ def test(test_args):
 
   print('Start testing...')
 
-  gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=0.9)
-  gpu_config = tf.ConfigProto(log_device_placement=False, gpu_options=gpu_options)
-
-  with tf.Graph().as_default(), tf.Session(config=gpu_config) as sess:
+  with tf.Graph().as_default(), tf.Session(config=gpu_config if args.with_gpu else None) as sess:
 
     # TODO: do we need this initializer?
     # if args.init_scale:

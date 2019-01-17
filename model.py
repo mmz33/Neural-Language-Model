@@ -43,16 +43,20 @@ class Model(object):
 
     # create rnn layers cells
 
-    # if with_gpu:
-    #   with tf.device('/gpu:0'):
-    rnn_layers = []
-    for l in range(args.num_layers):
-      if self.model == 'lstm':
-        cell = cell_fn(args.num_units, forget_bias=0.0)
-      else:
-        cell = cell_fn(args.num_units)
-      rnn_layers.append(cell)
-    lm_cell = rnn_cell.MultiRNNCell(rnn_layers) # construct layer cells sequentially
+    if with_gpu:
+      worker_device = '/gpu:0'
+    else:
+      worker_device = '/cpu:0'
+    with tf.device(worker_device):
+      print('worker_device:', worker_device)
+      rnn_layers = []
+      for l in range(args.num_layers):
+        if self.model == 'lstm':
+          cell = cell_fn(args.num_units, forget_bias=0.0)
+        else:
+          cell = cell_fn(args.num_units)
+        rnn_layers.append(cell)
+      lm_cell = rnn_cell.MultiRNNCell(rnn_layers) # construct layer cells sequentially
 
     # initial hidden state
     self.initial_lm_state = lm_cell.zero_state(self.batch_size, tf.float32)
