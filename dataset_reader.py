@@ -57,7 +57,9 @@ class DatasetReader:
     unk_token = self.get_unk_token()
     with open(file_name, 'r') as f:
       for wrd in f:
-        wrd2idx[wrd.strip()] = len(wrd2idx)
+        wrd_ = wrd.strip().lower()
+        if wrd_ not in wrd2idx:
+          wrd2idx[wrd_] = len(wrd2idx)
       if unk_token not in wrd2idx:
         wrd2idx[unk_token] = len(wrd2idx)
     return wrd2idx
