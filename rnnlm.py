@@ -133,7 +133,7 @@ def train(args):
 
   args.vocab_size = data_reader.vocab_size
   print('vocab size: {}'.format(args.vocab_size))
-  fout.write('vocab size: {}'.format(str(args.vocab_size)))
+  fout.write('vocab size: {}\n'.format(str(args.vocab_size)))
 
   print('Start training....')
 
