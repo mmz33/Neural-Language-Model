@@ -250,7 +250,7 @@ def test(test_args):
     # else:
     #   initializer = tf.glorot_uniform_initializer()
 
-    with tf.variable_scope('test_model', reuse=None):
+    with tf.variable_scope('train_model', reuse=None):
       m_test = Model(args, is_training=False)
 
     saver = tf.train.Saver(tf.global_variables())
