@@ -174,7 +174,7 @@ def train(args):
       print('Epoch: %d' % (e+1))
 
       m_train.assign_lr(sess, lr)
-      print('Learning rate: %.3f' % sess.run(m_train.lr))
+      print('Learning rate: %.6f' % sess.run(m_train.lr))
 
       fout.write("Epoch: %d\n" % (e + 1))
       fout.write("Learning rate: %.3f\n" % sess.run(m_train.lr))
@@ -207,6 +207,10 @@ def train(args):
           best_pp = dev_pp
         else:
           break
+      else:
+        checkpoint_path = os.path.join(save_dir, 'model.ckpt')
+        saver.save(sess, checkpoint_path, global_step=e)
+        print("model saved to {}".format(checkpoint_path))
 
       fout.flush()
 
