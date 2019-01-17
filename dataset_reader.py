@@ -38,7 +38,7 @@ class DatasetReader:
     start_token = self.get_start_token()
     end_token = self.get_end_token()
     data = [start_token]
-    with open(file_name, 'r') as f:
+    with open(file_name, 'r', encoding='UTF-8') as f:
       for line in f:
         line = line.strip().lower().split()
         for token in line:
@@ -55,7 +55,7 @@ class DatasetReader:
 
     wrd2idx = {}
     unk_token = self.get_unk_token()
-    with open(file_name, 'r') as f:
+    with open(file_name, 'r', encoding='UTF-8') as f:
       for wrd in f:
         wrd_ = wrd.strip().lower()
         if wrd_ not in wrd2idx:
