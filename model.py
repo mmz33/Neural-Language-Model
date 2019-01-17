@@ -48,7 +48,6 @@ class Model(object):
     else:
       worker_device = '/cpu:0'
     with tf.device(worker_device):
-      print('worker_device:', worker_device)
       rnn_layers = []
       for l in range(args.num_layers):
         if self.model == 'lstm':

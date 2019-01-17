@@ -42,6 +42,8 @@ def main():
                       help='number of training epochs')
   parser.add_argument('--decay_rate', type=float, default=0.5,
                       help='the decay of the learning rate')
+  parser.add_argument('--start_epoch_decay', type=float, default=5,
+                      help='start lr decay epoch')
   parser.add_argument('--model', type=str, default='lstm',
                       help='rnn, gru, or lstm')
   parser.add_argument('--batch_size', type=int, default=20,
@@ -56,7 +58,7 @@ def main():
                       help='maximum permissible norm of the gradient')
   parser.add_argument('--optimizer', type=str, default='sgd',
                       help='sgd, momentum, or adagrad')
-  parser.add_argument('--with_gpu', type=bool, default=False),
+  parser.add_argument('--with_gpu', type=bool, default=False)
 
   # Flags for test mode (--task='test').
   parser.add_argument('--test_file', type=str, default='',
@@ -165,8 +167,8 @@ def train(args):
     decay_counter = 1
     lr = args.lr
     while e < args.num_epochs:
-      # apply lr decay after epoch 4
-      if e > 4:
+      # apply lr decay
+      if e >= args.start_epoch_decay:
         lr_decay = args.decay_rate ** decay_counter
         lr *= lr_decay
         decay_counter += 1
@@ -265,7 +267,7 @@ def test(test_args):
                         data_reader,
                         tf.no_op())
 
-    print('Test Perplexity: %.3f'.format(test_pp))
+    print('Test Perplexity: %.3f' % test_pp)
     print("Test time: %.0f" % (time.time() - start))
 
 if __name__ == '__main__':
