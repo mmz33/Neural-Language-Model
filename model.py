@@ -73,7 +73,7 @@ class Model(object):
     # split input into list
 
     # at each time step, we feed (B,1,D) as input
-    inputs = tf.split(inputs, self.num_steps, 1) # list of (B,1 D) of size T
+    inputs = tf.split(inputs, self.num_steps, 1) # list of (B,1,D) of size T
 
     # convert each element to (B, D) so inputs become a list of (B,D) and size T
     inputs = [tf.squeeze(input_, [1]) for input_ in inputs]
